@@ -6,15 +6,25 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+const (
+	screenW   = 1920
+	screenH   = 1080
+	maxScenes = 3
+	tileW     = 128
+	tileH     = 128
+	w         = (screenW / tileW) //15
+	h         = (screenH / tileH) //8
+)
+
 func PlaceTile(x, y int32, out *[]rl.Rectangle) []rl.Rectangle {
-	newT := rl.NewRectangle(float32(x), float32(y), 128, 128)
+	newT := rl.NewRectangle(float32(x), float32(y), tileW, tileH)
 	*out = append(*out, newT)
 	return *out
 }
 
 func main() {
 	rl.SetConfigFlags(rl.FlagVsyncHint)
-	rl.InitWindow(1280, 720, "integra -editor")
+	rl.InitWindow(screenW, screenH, "integra -editor")
 
 	rl.SetTargetFPS(60)
 
@@ -24,9 +34,18 @@ func main() {
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 
+		rl.DrawText("EDITOR WINDOW", screenW/2, 5, 36, rl.Black)
+		for id := 0; id < w*h; id++ {
+			x := id % w
+			y := id / w
+
+			rl.DrawRectangleLines(int32(x*tileW), int32(y*tileH), tileW, tileH, rl.Gray)
+
+		}
+
 		rl.ClearBackground(rl.RayWhite)
 
-		rl.DrawText("EDITOR WINDOW", 1280/3, 5, 36, rl.LightGray)
+		fmt.Printf("Mouse Pos (%v, %v)\n", rl.GetMouseX(), rl.GetMouseY())
 
 		if rl.IsMouseButtonPressed(rl.MouseLeftButton) {
 			tiles = PlaceTile(rl.GetMouseX(), rl.GetMouseY(), &tiles)
