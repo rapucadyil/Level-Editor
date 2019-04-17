@@ -21,6 +21,8 @@ const (
 var tiles []rl.Rectangle
 var show_grid = true
 
+var icon *rl.Image = rl.LoadImage("icon.png")
+
 func PlaceTile(x, y int32, out []rl.Rectangle) []rl.Rectangle {
 	newT := rl.NewRectangle(float32(x-x%tileW), float32(y-y%tileH), tileW, tileH)
 	out = append(out, newT)
@@ -30,7 +32,7 @@ func PlaceTile(x, y int32, out []rl.Rectangle) []rl.Rectangle {
 func SaveMap() {
 	print("Saving...\n")
 
-	write, err := os.Create("tiledata.map")
+	write, err := os.Create("tilemap.imd")
 
 	if err != nil {
 		panic("Couldn't create file")
@@ -38,15 +40,16 @@ func SaveMap() {
 	defer write.Close()
 
 	for i, rect := range tiles {
-
-		fmt.Fprintf(write, "Tile #: %d, %+v, \n", i, rect)
+		if rect != rl.NewRectangle(0, 0, 0, 0) {
+			fmt.Fprintf(write, "Tile #: %d, %+v, \n", i, rect)
+		}
 	}
 
 	print("Saved\n")
 }
 
 func HandleInput() {
-	if rl.IsKeyDown(rl.KeyU) {
+	if rl.IsKeyDown(rl.KeyC) {
 		Undo(tiles)
 	}
 }
@@ -54,7 +57,7 @@ func HandleInput() {
 func main() {
 	rl.SetConfigFlags(rl.FlagVsyncHint)
 	rl.InitWindow(screenW, screenH, "integra -editor")
-
+	rl.SetWindowIcon(*icon)
 	rl.SetTargetFPS(60)
 	//rl.ToggleFullscreen()
 	tiles = make([]rl.Rectangle, 0)
