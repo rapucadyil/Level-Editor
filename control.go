@@ -27,9 +27,8 @@ func NewEditorPanel(title string, w, h, x, y int32) *EditorPanel {
 func CreateAndDisplayEditorPanel() {
 	panel := NewEditorPanel("Editor", 128, 128, 10, 10)
 	bounds := rl.NewRectangle(float32(panel.xpos), float32(panel.ypos), float32(panel.panel_w), float32(panel.panel_h))
-	bounds_button := rl.NewRectangle(float32(panel.xpos), float32(panel.ypos+128), float32(panel.panel_w+256), float32(panel.panel_h))
+	bounds_button := rl.NewRectangle(float32(panel.xpos), float32(panel.ypos+128), float32(panel.panel_w+128), float32(panel.panel_h))
 	clicked := raygui.Button(bounds_button, "Toggle Grid")
-
 	if clicked {
 		show_grid = !show_grid
 	}

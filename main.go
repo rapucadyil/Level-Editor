@@ -21,7 +21,7 @@ var tiles []rl.Rectangle
 var show_grid = true
 
 func PlaceTile(x, y int32, out []rl.Rectangle) []rl.Rectangle {
-	newT := rl.NewRectangle(float32(x), float32(y), tileW, tileH)
+	newT := rl.NewRectangle(float32(x-x%tileW), float32(y-y%tileH), tileW, tileH)
 	out = append(out, newT)
 	return out
 }
@@ -37,7 +37,7 @@ func main() {
 	rl.InitWindow(screenW, screenH, "integra -editor")
 
 	rl.SetTargetFPS(60)
-	rl.ToggleFullscreen()
+	//rl.ToggleFullscreen()
 	tiles = make([]rl.Rectangle, 0)
 
 	for !rl.WindowShouldClose() {
@@ -45,7 +45,7 @@ func main() {
 
 		raygui.LoadGuiStyle("gui_styles/dark.style")
 
-		rl.DrawText("EDITOR WINDOW", screenW/2, 5, 36, rl.Black)
+		rl.DrawText("EDITOR WINDOW", screenW/3, 5, 36, rl.Black)
 		if show_grid {
 			for id := 0; id < w*h; id++ {
 				x := id % w
