@@ -29,6 +29,11 @@ func CreateAndDisplayEditorPanel() {
 	bounds := rl.NewRectangle(float32(panel.xpos), float32(panel.ypos), float32(panel.panel_w), float32(panel.panel_h))
 	bounds_button := rl.NewRectangle(float32(panel.xpos), float32(panel.ypos+128), float32(panel.panel_w+128), float32(panel.panel_h))
 	clicked := raygui.Button(bounds_button, "Toggle Grid")
+	bounds_save_button := rl.NewRectangle(float32(panel.xpos), float32(panel.ypos+256), float32(panel.panel_w+128), float32(panel.panel_h))
+	saved := raygui.Button(bounds_save_button, "Save")
+	if saved {
+		SaveMap()
+	}
 	if clicked {
 		show_grid = !show_grid
 	}

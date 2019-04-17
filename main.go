@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/gen2brain/raylib-go/raygui"
 
@@ -24,6 +25,24 @@ func PlaceTile(x, y int32, out []rl.Rectangle) []rl.Rectangle {
 	newT := rl.NewRectangle(float32(x-x%tileW), float32(y-y%tileH), tileW, tileH)
 	out = append(out, newT)
 	return out
+}
+
+func SaveMap() {
+	print("Saving...\n")
+
+	write, err := os.Create("tiledata.map")
+
+	if err != nil {
+		panic("Couldn't create file")
+	}
+	defer write.Close()
+
+	for i, rect := range tiles {
+
+		fmt.Fprintf(write, "Tile #: %d, %+v, \n", i, rect)
+	}
+
+	print("Saved\n")
 }
 
 func HandleInput() {
