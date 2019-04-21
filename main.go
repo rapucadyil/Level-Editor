@@ -41,7 +41,7 @@ func SaveMap() {
 
 	for i, rect := range tiles {
 		if rect != rl.NewRectangle(0, 0, 0, 0) {
-			fmt.Fprintf(write, "Tile #: %d, %+v, \n", i, rect)
+			fmt.Fprintf(write, "Tile #: %d %+v, \n", i, rect)
 		}
 	}
 
@@ -94,6 +94,10 @@ func main() {
 
 		if rl.IsKeyPressed(rl.KeyA) {
 			fmt.Printf("Tiles stored: %v\n", tiles)
+		}
+
+		if rl.IsKeyPressed(rl.KeyL) {
+			fmt.Println(LoadTilemapData("tilemap.imd"))
 		}
 
 		HandleInput()

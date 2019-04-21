@@ -1,6 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
+	"strings"
+
 	"github.com/gen2brain/raylib-go/raygui"
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -39,4 +43,22 @@ func CreateAndDisplayEditorPanel() {
 	}
 
 	raygui.Label(bounds, panel.panel_title)
+}
+
+func LoadTilemapData(str string) []string {
+	r := make([]string, 0)
+	tile_data, err := ioutil.ReadFile(str)
+	if err != nil {
+		panic(err)
+	}
+
+	s := strings.Split(string(tile_data), ",")
+	fmt.Printf("Tile Data: %v\n", s[0])
+	fmt.Printf("Tile Data: %v\n", s[1])
+	fmt.Printf("Tile Data: %v\n", s[2])
+	fmt.Printf("Tile Data: %v\n", s[3])
+	fmt.Printf("Tile Data: %v\n", s[4])
+	//tile_map := make([]rl.Rectangle, 0)
+
+	return r
 }
