@@ -32,19 +32,18 @@ func PlaceTile(x, y int32, out []rl.Rectangle) []rl.Rectangle {
 func SaveMap() {
 	print("Saving...\n")
 
-	write, err := os.Create("tilemap.imd")
+	write, err := os.Create("tilemap.tmdata")
 
 	if err != nil {
 		panic("Couldn't create file")
 	}
 	defer write.Close()
 
-	for i, rect := range tiles {
-		if rect != rl.NewRectangle(0, 0, 0, 0) {
-			fmt.Fprintf(write, "Tile #: %d %+v, \n", i, rect)
+	for i := 0; i < len(tiles); i++ {
+		if tiles[i] != rl.NewRectangle(0, 0, 0, 0) {
+			fmt.Fprintf(write, "%v, %v, %v, %v, \n", tiles[i].X, tiles[i].Y, tiles[i].Width, tiles[i].Height)
 		}
 	}
-
 	print("Saved\n")
 }
 
@@ -96,9 +95,9 @@ func main() {
 			fmt.Printf("Tiles stored: %v\n", tiles)
 		}
 
-		if rl.IsKeyPressed(rl.KeyL) {
+		/* if rl.IsKeyPressed(rl.KeyL) {
 			fmt.Println(LoadTilemapData("tilemap.imd"))
-		}
+		 }*/
 
 		HandleInput()
 		rl.EndDrawing()
