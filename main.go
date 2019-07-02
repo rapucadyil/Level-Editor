@@ -21,10 +21,14 @@ const (
 var tiles []rl.Rectangle
 var show_grid = true
 
+var lastPlaced rl.Rectangle
+
 var icon *rl.Image = rl.LoadImage("icon.png")
 
 func PlaceTile(x, y int32, out []rl.Rectangle) []rl.Rectangle {
 	newT := rl.NewRectangle(float32(x-x%tileW), float32(y-y%tileH), tileW, tileH)
+	lastPlaced = newT
+	fmt.Printf("Last place tile (%v, %v)\n", lastPlaced.X, lastPlaced.Y)
 	out = append(out, newT)
 	return out
 }
@@ -47,12 +51,6 @@ func SaveMap() {
 	print("Saved\n")
 }
 
-func HandleInput() {
-	if rl.IsKeyDown(rl.KeyC) {
-		Undo(tiles)
-	}
-}
-
 func main() {
 	rl.SetConfigFlags(rl.FlagVsyncHint)
 	rl.InitWindow(screenW, screenH, "integra -editor")
@@ -63,7 +61,6 @@ func main() {
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
-
 		raygui.LoadGuiStyle("gui_styles/dark.style")
 
 		rl.DrawText("EDITOR WINDOW", screenW/3, 5, 36, rl.Black)
@@ -92,14 +89,15 @@ func main() {
 		}
 
 		if rl.IsKeyPressed(rl.KeyA) {
-			fmt.Printf("Tiles stored: %v\n", tiles)
+			rl.DrawText("Saved!", screenW/2, screenH/2, 30, rl.Red)
+			SaveMap()
 		}
-
+		Undo()
+		Clear()
 		/* if rl.IsKeyPressed(rl.KeyL) {
 			fmt.Println(LoadTilemapData("tilemap.imd"))
 		 }*/
 
-		HandleInput()
 		rl.EndDrawing()
 	}
 

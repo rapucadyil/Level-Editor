@@ -11,9 +11,17 @@ type EditorPanel struct {
 	panel_w, panel_h int32
 }
 
-func Undo(tiles []rl.Rectangle) {
-	for i := len(tiles) - 1; i >= 0; i-- {
-		tiles[i] = rl.Rectangle{}
+func Undo() {
+	if rl.IsKeyDown(rl.KeyU) {
+		tiles[len(tiles)-1] = rl.Rectangle{}
+	}
+}
+
+func Clear() {
+	if rl.IsKeyDown(rl.KeyC) {
+		for i := 0; i < len(tiles); i++ {
+			tiles[i] = rl.Rectangle{}
+		}
 	}
 }
 
@@ -40,15 +48,3 @@ func CreateAndDisplayEditorPanel() {
 
 	raygui.Label(bounds, panel.panel_title)
 }
-
-/* func LoadTilemapData(str string) []string {
-	r := make([]string, 0)
-	tile_data, err := ioutil.ReadFile(str)
-	if err != nil {
-		panic(err)
-	}
-
-	s := strings.Split(string(tile_data), ",")
-	return r
-}
-*/
