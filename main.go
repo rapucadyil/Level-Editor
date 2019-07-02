@@ -18,18 +18,19 @@ const (
 	h       = (screenH / tileH) //8
 )
 
-var tiles []rl.Rectangle
+var tiles []tile
 var show_grid = true
 
-var lastPlaced rl.Rectangle
+var lastPlaced tile
 
 var icon *rl.Image = rl.LoadImage("icon.png")
 
-func PlaceTile(x, y int32, out []rl.Rectangle) []rl.Rectangle {
-	newT := rl.NewRectangle(float32(x-x%tileW), float32(y-y%tileH), tileW, tileH)
-	lastPlaced = newT
-	fmt.Printf("Last place tile (%v, %v)\n", lastPlaced.X, lastPlaced.Y)
-	out = append(out, newT)
+func PlaceTile(x, y int32, out []tile) []tile {
+	newTRect := rl.NewRectangle(float32(x-x%tileW), float32(y-y%tileH), tileW, tileH)
+	newT := NewTile(newTRect, 0, rl.Red)
+	lastPlaced = *newT
+	fmt.Printf("Last place tile (%v, %v)\n", lastPlaced.graphic.X, lastPlaced.graphic.Y)
+	out = append(out, *newT)
 	return out
 }
 
@@ -44,8 +45,9 @@ func SaveMap() {
 	defer write.Close()
 
 	for i := 0; i < len(tiles); i++ {
-		if tiles[i] != rl.NewRectangle(0, 0, 0, 0) {
-			fmt.Fprintf(write, "%v, %v, %v, %v, \n", tiles[i].X, tiles[i].Y, tiles[i].Width, tiles[i].Height)
+		if tiles[i].graphic != rl.NewRectangle(0, 0, 0, 0) {
+			fmt.Fprintf(write, "%v, %v, %v, %v, \n",
+				tiles[i].graphic.X, tiles[i].graphic.Y, tiles[i].graphic.Width, tiles[i].graphic.Height)
 		}
 	}
 	print("Saved\n")
@@ -57,7 +59,7 @@ func main() {
 	rl.SetWindowIcon(*icon)
 	rl.SetTargetFPS(60)
 	//rl.ToggleFullscreen()
-	tiles = make([]rl.Rectangle, 0)
+	tiles = make([]tile, 0)
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
@@ -85,7 +87,7 @@ func main() {
 			}
 		}
 		for _, tile := range tiles {
-			rl.DrawRectangleRec(tile, rl.DarkBlue)
+			rl.DrawRectangleRec(tile.graphic, tile.color)
 		}
 
 		if rl.IsKeyPressed(rl.KeyA) {

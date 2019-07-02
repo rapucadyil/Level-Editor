@@ -13,14 +13,14 @@ type EditorPanel struct {
 
 func Undo() {
 	if rl.IsKeyDown(rl.KeyU) {
-		tiles[len(tiles)-1] = rl.Rectangle{}
+		tiles[len(tiles)-1] = tile{}
 	}
 }
 
 func Clear() {
 	if rl.IsKeyDown(rl.KeyC) {
 		for i := 0; i < len(tiles); i++ {
-			tiles[i] = rl.Rectangle{}
+			tiles[i] = tile{}
 		}
 	}
 }
